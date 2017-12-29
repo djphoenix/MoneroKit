@@ -1,0 +1,846 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D0E022472005B62E0054390A /* stage1.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E0221E2005B5520054390A /* stage1.metal */; };
+		D0E022482005B62E0054390A /* stage2.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E022212005B5520054390A /* stage2.metal */; };
+		D0E022492005B62E0054390A /* stage3.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E0221D2005B5520054390A /* stage3.metal */; };
+		D0E0224A2005B62E0054390A /* stage4.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E022202005B5520054390A /* stage4.metal */; };
+		D0E0224B2005B62E0054390A /* stage5.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E0221A2005B5520054390A /* stage5.metal */; };
+		D0E0225A2005B7BE0054390A /* MoneroBackendCPUThread.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022382005B5520054390A /* MoneroBackendCPUThread.m */; };
+		D0E0225B2005B7BE0054390A /* MoneroBackendMetalThread.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022192005B5520054390A /* MoneroBackendMetalThread.m */; };
+		D0E0225C2005B7C40054390A /* MoneroMiner.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E0223A2005B5520054390A /* MoneroMiner.m */; };
+		D0E0225D2005B7C40054390A /* MoneroWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E0223F2005B5520054390A /* MoneroWorker.m */; };
+		D0E0225E2005B7C40054390A /* NSData+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E0223B2005B5520054390A /* NSData+hex.m */; };
+		D0E0225F2005B7C40054390A /* MoneroPoolConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022422005B5520054390A /* MoneroPoolConnection.m */; };
+		D0E022602005B7C40054390A /* MoneroBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022172005B5520054390A /* MoneroBackend.m */; };
+		D0E022612005B7C40054390A /* MoneroBackendJob.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E0223E2005B5520054390A /* MoneroBackendJob.m */; };
+		D0E022622005B7CC0054390A /* MoneroKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022402005B5520054390A /* MoneroKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0E022632005B7CC0054390A /* NSData+hex.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022162005B5520054390A /* NSData+hex.h */; };
+		D0E022642005B7CC0054390A /* MoneroPoolConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022392005B5520054390A /* MoneroPoolConnection.h */; };
+		D0E022652005B7CC0054390A /* MoneroBackend.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0223C2005B5520054390A /* MoneroBackend.h */; };
+		D0E022662005B7CC0054390A /* MoneroBackend_private.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0223D2005B5520054390A /* MoneroBackend_private.h */; };
+		D0E022672005B7CC0054390A /* MoneroBackendCPUThread.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022232005B5520054390A /* MoneroBackendCPUThread.h */; };
+		D0E022682005B7CC0054390A /* MoneroBackendMetalThread.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0221C2005B5520054390A /* MoneroBackendMetalThread.h */; };
+		D0E022692005B7D30054390A /* slow-hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022372005B5520054390A /* slow-hash.c */; };
+		D0E0226A2005B7D70054390A /* int-util.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022362005B5520054390A /* int-util.h */; };
+		D0E0226B2005B7D70054390A /* hash-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022302005B5520054390A /* hash-ops.h */; };
+		D0E0226C2005B7DE0054390A /* keccak.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022322005B5520054390A /* keccak.h */; };
+		D0E0226D2005B7DE0054390A /* keccak.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022252005B5520054390A /* keccak.c */; };
+		D0E0226E2005B7DE0054390A /* groestl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022262005B5520054390A /* groestl.h */; };
+		D0E0226F2005B7DE0054390A /* groestl_tables.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0222D2005B5520054390A /* groestl_tables.h */; };
+		D0E022702005B7DE0054390A /* groestl.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022312005B5520054390A /* groestl.c */; };
+		D0E022712005B7DE0054390A /* hash-extra-groestl.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022272005B5520054390A /* hash-extra-groestl.c */; };
+		D0E022722005B7DE0054390A /* jh.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022282005B5520054390A /* jh.h */; };
+		D0E022732005B7DE0054390A /* jh.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E0222F2005B5520054390A /* jh.c */; };
+		D0E022742005B7DE0054390A /* hash-extra-jh.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E0222E2005B5520054390A /* hash-extra-jh.c */; };
+		D0E022752005B7DE0054390A /* skein.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0222B2005B5520054390A /* skein.h */; };
+		D0E022762005B7DE0054390A /* skein_port.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E0222C2005B5520054390A /* skein_port.h */; };
+		D0E022772005B7DE0054390A /* skein.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022342005B5520054390A /* skein.c */; };
+		D0E022782005B7DE0054390A /* hash-extra-skein.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022332005B5520054390A /* hash-extra-skein.c */; };
+		D0E022792005B7DE0054390A /* blake256.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022352005B5520054390A /* blake256.h */; };
+		D0E0227A2005B7DE0054390A /* blake256.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E0222A2005B5520054390A /* blake256.c */; };
+		D0E0227B2005B7DE0054390A /* hash-extra-blake.c in Sources */ = {isa = PBXBuildFile; fileRef = D0E022292005B5520054390A /* hash-extra-blake.c */; };
+		D0E022812005BA760054390A /* MoneroMetal.metallib.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E022802005BA760054390A /* MoneroMetal.metallib.h */; };
+		D0E0228A2005C1610054390A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022892005C1610054390A /* AppDelegate.m */; };
+		D0E0228D2005C1610054390A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E0228C2005C1610054390A /* ViewController.m */; };
+		D0E022982005C1610054390A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E022972005C1610054390A /* main.m */; };
+		D0E0229F2005C2190054390A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0E0229D2005C2190054390A /* Main.storyboard */; };
+		D0E022A02005C2190054390A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0E0229E2005C2190054390A /* LaunchScreen.storyboard */; };
+		D0E022A22005C5FE0054390A /* MoneroKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E022522005B6920054390A /* MoneroKit.framework */; };
+		D0E022AA2005CB500054390A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E022A92005CB500054390A /* main.swift */; };
+		D0E022AF2005CB810054390A /* MoneroKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E022522005B6920054390A /* MoneroKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0E0227C2005B9920054390A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0E022052005B3320054390A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0E0220C2005B35C0054390A;
+			remoteInfo = MoneroMetal;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D0E0220D2005B35C0054390A /* MoneroMetal.metallib */ = {isa = PBXFileReference; explicitFileType = "archive.metal-library"; includeInIndex = 0; path = MoneroMetal.metallib; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E022162005B5520054390A /* NSData+hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+hex.h"; sourceTree = "<group>"; };
+		D0E022172005B5520054390A /* MoneroBackend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackend.m; sourceTree = "<group>"; };
+		D0E022192005B5520054390A /* MoneroBackendMetalThread.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackendMetalThread.m; sourceTree = "<group>"; };
+		D0E0221A2005B5520054390A /* stage5.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage5.metal; sourceTree = "<group>"; };
+		D0E0221B2005B5520054390A /* aes.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = aes.metal; sourceTree = "<group>"; };
+		D0E0221C2005B5520054390A /* MoneroBackendMetalThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroBackendMetalThread.h; sourceTree = "<group>"; };
+		D0E0221D2005B5520054390A /* stage3.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage3.metal; sourceTree = "<group>"; };
+		D0E0221E2005B5520054390A /* stage1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage1.metal; sourceTree = "<group>"; };
+		D0E0221F2005B5520054390A /* keccak.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = keccak.metal; sourceTree = "<group>"; };
+		D0E022202005B5520054390A /* stage4.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage4.metal; sourceTree = "<group>"; };
+		D0E022212005B5520054390A /* stage2.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage2.metal; sourceTree = "<group>"; };
+		D0E022232005B5520054390A /* MoneroBackendCPUThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroBackendCPUThread.h; sourceTree = "<group>"; };
+		D0E022252005B5520054390A /* keccak.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = keccak.c; sourceTree = "<group>"; };
+		D0E022262005B5520054390A /* groestl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = groestl.h; sourceTree = "<group>"; };
+		D0E022272005B5520054390A /* hash-extra-groestl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hash-extra-groestl.c"; sourceTree = "<group>"; };
+		D0E022282005B5520054390A /* jh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jh.h; sourceTree = "<group>"; };
+		D0E022292005B5520054390A /* hash-extra-blake.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hash-extra-blake.c"; sourceTree = "<group>"; };
+		D0E0222A2005B5520054390A /* blake256.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = blake256.c; sourceTree = "<group>"; };
+		D0E0222B2005B5520054390A /* skein.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = skein.h; sourceTree = "<group>"; };
+		D0E0222C2005B5520054390A /* skein_port.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = skein_port.h; sourceTree = "<group>"; };
+		D0E0222D2005B5520054390A /* groestl_tables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = groestl_tables.h; sourceTree = "<group>"; };
+		D0E0222E2005B5520054390A /* hash-extra-jh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hash-extra-jh.c"; sourceTree = "<group>"; };
+		D0E0222F2005B5520054390A /* jh.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jh.c; sourceTree = "<group>"; };
+		D0E022302005B5520054390A /* hash-ops.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hash-ops.h"; sourceTree = "<group>"; };
+		D0E022312005B5520054390A /* groestl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = groestl.c; sourceTree = "<group>"; };
+		D0E022322005B5520054390A /* keccak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = keccak.h; sourceTree = "<group>"; };
+		D0E022332005B5520054390A /* hash-extra-skein.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hash-extra-skein.c"; sourceTree = "<group>"; };
+		D0E022342005B5520054390A /* skein.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = skein.c; sourceTree = "<group>"; };
+		D0E022352005B5520054390A /* blake256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blake256.h; sourceTree = "<group>"; };
+		D0E022362005B5520054390A /* int-util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "int-util.h"; sourceTree = "<group>"; };
+		D0E022372005B5520054390A /* slow-hash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "slow-hash.c"; sourceTree = "<group>"; };
+		D0E022382005B5520054390A /* MoneroBackendCPUThread.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackendCPUThread.m; sourceTree = "<group>"; };
+		D0E022392005B5520054390A /* MoneroPoolConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroPoolConnection.h; sourceTree = "<group>"; };
+		D0E0223A2005B5520054390A /* MoneroMiner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroMiner.m; sourceTree = "<group>"; };
+		D0E0223B2005B5520054390A /* NSData+hex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+hex.m"; sourceTree = "<group>"; };
+		D0E0223C2005B5520054390A /* MoneroBackend.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroBackend.h; sourceTree = "<group>"; };
+		D0E0223D2005B5520054390A /* MoneroBackend_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroBackend_private.h; sourceTree = "<group>"; };
+		D0E0223E2005B5520054390A /* MoneroBackendJob.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackendJob.m; sourceTree = "<group>"; };
+		D0E0223F2005B5520054390A /* MoneroWorker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroWorker.m; sourceTree = "<group>"; };
+		D0E022402005B5520054390A /* MoneroKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneroKit.h; sourceTree = "<group>"; };
+		D0E022412005B5520054390A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0E022422005B5520054390A /* MoneroPoolConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroPoolConnection.m; sourceTree = "<group>"; };
+		D0E022522005B6920054390A /* MoneroKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoneroKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E022802005BA760054390A /* MoneroMetal.metallib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoneroMetal.metallib.h; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E022862005C1610054390A /* MoneroKitSample-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MoneroKitSample-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E022882005C1610054390A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D0E022892005C1610054390A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D0E0228C2005C1610054390A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		D0E022962005C1610054390A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0E022972005C1610054390A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D0E0229D2005C2190054390A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		D0E0229E2005C2190054390A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D0E022A72005CB500054390A /* MoneroKitSample-OSX-Swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "MoneroKitSample-OSX-Swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E022A92005CB500054390A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D0E022832005C1610054390A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E022A22005C5FE0054390A /* MoneroKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0E022A42005CB500054390A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E022AF2005CB810054390A /* MoneroKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0E022042005B3320054390A = {
+			isa = PBXGroup;
+			children = (
+				D0E022152005B5520054390A /* MoneroKit */,
+				D0E022872005C1610054390A /* MoneroKitSample */,
+				D0E0220E2005B35C0054390A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0E0220E2005B35C0054390A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0E0220D2005B35C0054390A /* MoneroMetal.metallib */,
+				D0E022522005B6920054390A /* MoneroKit.framework */,
+				D0E022862005C1610054390A /* MoneroKitSample-iOS.app */,
+				D0E022A72005CB500054390A /* MoneroKitSample-OSX-Swift */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0E022152005B5520054390A /* MoneroKit */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022432005B56B0054390A /* Core */,
+				D0E022452005B5BD0054390A /* Network */,
+				D0E022442005B5980054390A /* Backend */,
+			);
+			path = MoneroKit;
+			sourceTree = "<group>";
+		};
+		D0E022182005B5520054390A /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				D0E0221C2005B5520054390A /* MoneroBackendMetalThread.h */,
+				D0E022192005B5520054390A /* MoneroBackendMetalThread.m */,
+				D0E022802005BA760054390A /* MoneroMetal.metallib.h */,
+				D0E0221B2005B5520054390A /* aes.metal */,
+				D0E0221F2005B5520054390A /* keccak.metal */,
+				D0E0221E2005B5520054390A /* stage1.metal */,
+				D0E022212005B5520054390A /* stage2.metal */,
+				D0E0221D2005B5520054390A /* stage3.metal */,
+				D0E022202005B5520054390A /* stage4.metal */,
+				D0E0221A2005B5520054390A /* stage5.metal */,
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		D0E022222005B5520054390A /* CPU */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022232005B5520054390A /* MoneroBackendCPUThread.h */,
+				D0E022382005B5520054390A /* MoneroBackendCPUThread.m */,
+				D0E022242005B5520054390A /* crypto */,
+			);
+			path = CPU;
+			sourceTree = "<group>";
+		};
+		D0E022242005B5520054390A /* crypto */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022362005B5520054390A /* int-util.h */,
+				D0E022302005B5520054390A /* hash-ops.h */,
+				D0E022372005B5520054390A /* slow-hash.c */,
+				D0E022462005B5E70054390A /* extra */,
+			);
+			path = crypto;
+			sourceTree = "<group>";
+		};
+		D0E022432005B56B0054390A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022412005B5520054390A /* Info.plist */,
+				D0E022402005B5520054390A /* MoneroKit.h */,
+				D0E0223A2005B5520054390A /* MoneroMiner.m */,
+				D0E0223F2005B5520054390A /* MoneroWorker.m */,
+				D0E022162005B5520054390A /* NSData+hex.h */,
+				D0E0223B2005B5520054390A /* NSData+hex.m */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		D0E022442005B5980054390A /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				D0E0223C2005B5520054390A /* MoneroBackend.h */,
+				D0E0223D2005B5520054390A /* MoneroBackend_private.h */,
+				D0E022172005B5520054390A /* MoneroBackend.m */,
+				D0E0223E2005B5520054390A /* MoneroBackendJob.m */,
+				D0E022222005B5520054390A /* CPU */,
+				D0E022182005B5520054390A /* Metal */,
+			);
+			name = Backend;
+			sourceTree = "<group>";
+		};
+		D0E022452005B5BD0054390A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022392005B5520054390A /* MoneroPoolConnection.h */,
+				D0E022422005B5520054390A /* MoneroPoolConnection.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		D0E022462005B5E70054390A /* extra */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022322005B5520054390A /* keccak.h */,
+				D0E022252005B5520054390A /* keccak.c */,
+				D0E022262005B5520054390A /* groestl.h */,
+				D0E0222D2005B5520054390A /* groestl_tables.h */,
+				D0E022312005B5520054390A /* groestl.c */,
+				D0E022272005B5520054390A /* hash-extra-groestl.c */,
+				D0E022282005B5520054390A /* jh.h */,
+				D0E0222F2005B5520054390A /* jh.c */,
+				D0E0222E2005B5520054390A /* hash-extra-jh.c */,
+				D0E0222B2005B5520054390A /* skein.h */,
+				D0E0222C2005B5520054390A /* skein_port.h */,
+				D0E022342005B5520054390A /* skein.c */,
+				D0E022332005B5520054390A /* hash-extra-skein.c */,
+				D0E022352005B5520054390A /* blake256.h */,
+				D0E0222A2005B5520054390A /* blake256.c */,
+				D0E022292005B5520054390A /* hash-extra-blake.c */,
+			);
+			name = extra;
+			sourceTree = "<group>";
+		};
+		D0E022872005C1610054390A /* MoneroKitSample */ = {
+			isa = PBXGroup;
+			children = (
+				D0E0229C2005C1930054390A /* iOS */,
+				D0E022AE2005CB5C0054390A /* OSX-Swift */,
+			);
+			path = MoneroKitSample;
+			sourceTree = "<group>";
+		};
+		D0E0229C2005C1930054390A /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D0E0229E2005C2190054390A /* LaunchScreen.storyboard */,
+				D0E022962005C1610054390A /* Info.plist */,
+				D0E022972005C1610054390A /* main.m */,
+				D0E022882005C1610054390A /* AppDelegate.h */,
+				D0E022892005C1610054390A /* AppDelegate.m */,
+				D0E0229D2005C2190054390A /* Main.storyboard */,
+				D0E0228C2005C1610054390A /* ViewController.m */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		D0E022AE2005CB5C0054390A /* OSX-Swift */ = {
+			isa = PBXGroup;
+			children = (
+				D0E022A92005CB500054390A /* main.swift */,
+			);
+			path = "OSX-Swift";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D0E0224F2005B6920054390A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E0226F2005B7DE0054390A /* groestl_tables.h in Headers */,
+				D0E022752005B7DE0054390A /* skein.h in Headers */,
+				D0E022662005B7CC0054390A /* MoneroBackend_private.h in Headers */,
+				D0E022642005B7CC0054390A /* MoneroPoolConnection.h in Headers */,
+				D0E022672005B7CC0054390A /* MoneroBackendCPUThread.h in Headers */,
+				D0E022652005B7CC0054390A /* MoneroBackend.h in Headers */,
+				D0E022682005B7CC0054390A /* MoneroBackendMetalThread.h in Headers */,
+				D0E022762005B7DE0054390A /* skein_port.h in Headers */,
+				D0E022622005B7CC0054390A /* MoneroKit.h in Headers */,
+				D0E022722005B7DE0054390A /* jh.h in Headers */,
+				D0E0226B2005B7D70054390A /* hash-ops.h in Headers */,
+				D0E0226A2005B7D70054390A /* int-util.h in Headers */,
+				D0E022792005B7DE0054390A /* blake256.h in Headers */,
+				D0E0226E2005B7DE0054390A /* groestl.h in Headers */,
+				D0E022812005BA760054390A /* MoneroMetal.metallib.h in Headers */,
+				D0E0226C2005B7DE0054390A /* keccak.h in Headers */,
+				D0E022632005B7CC0054390A /* NSData+hex.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D0E0220C2005B35C0054390A /* MoneroMetal */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0E022142005B35C0054390A /* Build configuration list for PBXNativeTarget "MoneroMetal" */;
+			buildPhases = (
+				D0E0220B2005B35C0054390A /* Sources */,
+				D0E0224C2005B6380054390A /* Library header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MoneroMetal;
+			productName = MoneroMetal;
+			productReference = D0E0220D2005B35C0054390A /* MoneroMetal.metallib */;
+			productType = "com.apple.product-type.metal-library";
+		};
+		D0E022512005B6920054390A /* MoneroKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0E022572005B6920054390A /* Build configuration list for PBXNativeTarget "MoneroKit" */;
+			buildPhases = (
+				D0E0224D2005B6920054390A /* Sources */,
+				D0E0224F2005B6920054390A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0E0227D2005B9920054390A /* PBXTargetDependency */,
+			);
+			name = MoneroKit;
+			productName = MoneroKit;
+			productReference = D0E022522005B6920054390A /* MoneroKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D0E022852005C1610054390A /* MoneroKitSample-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0E022992005C1610054390A /* Build configuration list for PBXNativeTarget "MoneroKitSample-iOS" */;
+			buildPhases = (
+				D0E022822005C1610054390A /* Sources */,
+				D0E022832005C1610054390A /* Frameworks */,
+				D0E022842005C1610054390A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MoneroKitSample-iOS";
+			productName = "MoneroKitSample-iOS";
+			productReference = D0E022862005C1610054390A /* MoneroKitSample-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D0E022A62005CB500054390A /* MoneroKitSample-OSX-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0E022AB2005CB500054390A /* Build configuration list for PBXNativeTarget "MoneroKitSample-OSX-Swift" */;
+			buildPhases = (
+				D0E022A32005CB500054390A /* Sources */,
+				D0E022A42005CB500054390A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MoneroKitSample-OSX-Swift";
+			productName = "MoneroKitSample-OSX-Swift";
+			productReference = D0E022A72005CB500054390A /* MoneroKitSample-OSX-Swift */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D0E022052005B3320054390A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				TargetAttributes = {
+					D0E0220C2005B35C0054390A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					D0E022512005B6920054390A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					D0E022852005C1610054390A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					D0E022A62005CB500054390A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D0E022082005B3320054390A /* Build configuration list for PBXProject "MoneroKit" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+			);
+			mainGroup = D0E022042005B3320054390A;
+			productRefGroup = D0E0220E2005B35C0054390A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D0E0220C2005B35C0054390A /* MoneroMetal */,
+				D0E022512005B6920054390A /* MoneroKit */,
+				D0E022852005C1610054390A /* MoneroKitSample-iOS */,
+				D0E022A62005CB500054390A /* MoneroKitSample-OSX-Swift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0E022842005C1610054390A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E0229F2005C2190054390A /* Main.storyboard in Resources */,
+				D0E022A02005C2190054390A /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0E0224C2005B6380054390A /* Library header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/MoneroMetal.metallib",
+			);
+			name = "Library header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/MoneroMetal.metallib.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "OUTFILE=${BUILT_PRODUCTS_DIR}/MoneroMetal.metallib.h\necho 'static const uint8_t MoneroMetal_metallib[] = {' > \"$OUTFILE\"\ncat \"${BUILT_PRODUCTS_DIR}/MoneroMetal.metallib\" | xxd -i >> \"$OUTFILE\"\necho '};' >> \"$OUTFILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D0E0220B2005B35C0054390A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E022492005B62E0054390A /* stage3.metal in Sources */,
+				D0E0224A2005B62E0054390A /* stage4.metal in Sources */,
+				D0E022472005B62E0054390A /* stage1.metal in Sources */,
+				D0E0224B2005B62E0054390A /* stage5.metal in Sources */,
+				D0E022482005B62E0054390A /* stage2.metal in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0E0224D2005B6920054390A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E022732005B7DE0054390A /* jh.c in Sources */,
+				D0E022612005B7C40054390A /* MoneroBackendJob.m in Sources */,
+				D0E0225B2005B7BE0054390A /* MoneroBackendMetalThread.m in Sources */,
+				D0E022692005B7D30054390A /* slow-hash.c in Sources */,
+				D0E0226D2005B7DE0054390A /* keccak.c in Sources */,
+				D0E0225F2005B7C40054390A /* MoneroPoolConnection.m in Sources */,
+				D0E0225C2005B7C40054390A /* MoneroMiner.m in Sources */,
+				D0E0227A2005B7DE0054390A /* blake256.c in Sources */,
+				D0E022702005B7DE0054390A /* groestl.c in Sources */,
+				D0E022742005B7DE0054390A /* hash-extra-jh.c in Sources */,
+				D0E022772005B7DE0054390A /* skein.c in Sources */,
+				D0E022712005B7DE0054390A /* hash-extra-groestl.c in Sources */,
+				D0E0227B2005B7DE0054390A /* hash-extra-blake.c in Sources */,
+				D0E0225A2005B7BE0054390A /* MoneroBackendCPUThread.m in Sources */,
+				D0E0225E2005B7C40054390A /* NSData+hex.m in Sources */,
+				D0E0225D2005B7C40054390A /* MoneroWorker.m in Sources */,
+				D0E022602005B7C40054390A /* MoneroBackend.m in Sources */,
+				D0E022782005B7DE0054390A /* hash-extra-skein.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0E022822005C1610054390A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E0228D2005C1610054390A /* ViewController.m in Sources */,
+				D0E022982005C1610054390A /* main.m in Sources */,
+				D0E0228A2005C1610054390A /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0E022A32005CB500054390A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0E022AA2005CB500054390A /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0E0227D2005B9920054390A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0E0220C2005B35C0054390A /* MoneroMetal */;
+			targetProxy = D0E0227C2005B9920054390A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D0E022092005B3320054390A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES_ERROR;
+				CLANG_WARN_COMMA = YES_ERROR;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES_ERROR;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES_ERROR;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES_AGGRESSIVE;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TSEM76CEN7;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES_ERROR;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LLVM_LTO = YES_THIN;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_LANGUAGE_REVISION = Metal11;
+				MTL_OPTIMIZATION_LEVEL = 3;
+				PRODUCT_BUNDLE_IDENTIFIER = "dj.phoenix.$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D0E0220A2005B3320054390A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES_ERROR;
+				CLANG_WARN_COMMA = YES_ERROR;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES_ERROR;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES_ERROR;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES_AGGRESSIVE;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TSEM76CEN7;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES_ERROR;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LLVM_LTO = YES_THIN;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_LANGUAGE_REVISION = Metal11;
+				MTL_OPTIMIZATION_LEVEL = 3;
+				PRODUCT_BUNDLE_IDENTIFIER = "dj.phoenix.$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D0E022122005B35C0054390A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				VALID_ARCHS = "arm64 x86_64";
+			};
+			name = Debug;
+		};
+		D0E022132005B35C0054390A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				VALID_ARCHS = "arm64 x86_64";
+			};
+			name = Release;
+		};
+		D0E022582005B6920054390A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MoneroKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				VALID_ARCHS = "x86_64 arm64";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D0E022592005B6920054390A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = MoneroKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				VALID_ARCHS = "x86_64 arm64";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D0E0229A2005C1610054390A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/MoneroKitSample/iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		D0E0229B2005C1610054390A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/MoneroKitSample/iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		D0E022AC2005CB500054390A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D0E022AD2005CB500054390A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D0E022082005B3320054390A /* Build configuration list for PBXProject "MoneroKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0E022092005B3320054390A /* Debug */,
+				D0E0220A2005B3320054390A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0E022142005B35C0054390A /* Build configuration list for PBXNativeTarget "MoneroMetal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0E022122005B35C0054390A /* Debug */,
+				D0E022132005B35C0054390A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0E022572005B6920054390A /* Build configuration list for PBXNativeTarget "MoneroKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0E022582005B6920054390A /* Debug */,
+				D0E022592005B6920054390A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0E022992005C1610054390A /* Build configuration list for PBXNativeTarget "MoneroKitSample-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0E0229A2005C1610054390A /* Debug */,
+				D0E0229B2005C1610054390A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0E022AB2005CB500054390A /* Build configuration list for PBXNativeTarget "MoneroKitSample-OSX-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0E022AC2005CB500054390A /* Debug */,
+				D0E022AD2005CB500054390A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D0E022052005B3320054390A /* Project object */;
+}
