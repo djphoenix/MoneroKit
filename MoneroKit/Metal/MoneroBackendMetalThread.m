@@ -15,7 +15,12 @@
 #import "hash-ops.h"
 #import "keccak.h"
 
+#if !TARGET_OS_SIMULATOR
 #include "MoneroMetal.metallib.h"
+#else
+#warning Metal is not supported in Simulator
+static const uint8_t MoneroMetal_metallib[] = {};
+#endif
 
 static const size_t blobBufferSize = 128;
 static const size_t expandedKeySize = 320;

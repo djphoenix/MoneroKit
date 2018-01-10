@@ -699,7 +699,7 @@
 		D0E022122005B35C0054390A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "iphoneos macosx";
 				VALID_ARCHS = "arm64 x86_64";
 			};
 			name = Debug;
@@ -707,7 +707,7 @@
 		D0E022132005B35C0054390A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "iphoneos macosx";
 				VALID_ARCHS = "arm64 x86_64";
 			};
 			name = Release;
