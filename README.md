@@ -39,6 +39,10 @@ let developerWorker = MoneroWorker(
 
 Feel free to pick any weight for donation worker, and thank you for support!
 
+If you prefer one-time donation, you can use following Monero Wallet Address:
+
+`48xSeFyBQRmRv7BFbQU16wVEVsWrEEGEuMDHjP66roWXHCLvKesdsTxWS6ef9SdHzeQZW1Lxds9rYGwiqHhpoW393S7ZAPM`
+
 ## License
 
 © 2018 Yury Popov _a.k.a. PhoeniX_
