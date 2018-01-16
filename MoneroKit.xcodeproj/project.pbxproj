@@ -68,6 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D07D9D33200DFD5700AB5832 /* MetalGranularity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalGranularity.h; sourceTree = "<group>"; };
 		D0E0220D2005B35C0054390A /* MoneroMetal.metallib */ = {isa = PBXFileReference; explicitFileType = "archive.metal-library"; includeInIndex = 0; path = MoneroMetal.metallib; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0E022162005B5520054390A /* NSData+hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+hex.h"; sourceTree = "<group>"; };
 		D0E022172005B5520054390A /* MoneroBackend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackend.m; sourceTree = "<group>"; };
@@ -180,6 +181,7 @@
 			children = (
 				D0E0221C2005B5520054390A /* MoneroBackendMetalThread.h */,
 				D0E022192005B5520054390A /* MoneroBackendMetalThread.m */,
+				D07D9D33200DFD5700AB5832 /* MetalGranularity.h */,
 				D0E022802005BA760054390A /* MoneroMetal.metallib.h */,
 				D0E0221B2005B5520054390A /* aes.metal */,
 				D0E0221F2005B5520054390A /* keccak.metal */,

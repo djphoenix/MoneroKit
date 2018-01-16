@@ -11,6 +11,8 @@ using namespace metal;
 
 #include "aes.metal"
 
+#include "MetalGranularity.h"
+
 constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t threadMemorySize = 1 << 21;
 constant static const constexpr size_t stateSize = 256;
@@ -34,7 +36,7 @@ kernel void cn_stage2_0(
   
   uint4 buf = state[0];
   
-  for (uint32_t i = 0; i < threadMemorySize / 128 / 16; i++) {
+  for (uint32_t i = 0; i < threadMemorySize / 128 / GRANULARITY; i++) {
     aes_round(buf, ek[0]);
     aes_round(buf, ek[1]);
     aes_round(buf, ek[2]);
@@ -60,7 +62,7 @@ kernel void cn_stage2_n(
   device uint4 *expandedKey = (device uint4*)(ekeybuf + idx.x * expandedKeySize);
   device uint4 *long_state = (device uint4*)(membuf + idx.x * threadMemorySize) + idx.y;
   uint32_t part = (uint32_t)(*partbuf);
-  long_state += (threadMemorySize / 128 / 16 * part - 1) * 8;
+  long_state += (threadMemorySize / 128 / GRANULARITY * part - 1) * 8;
 
   thread uint4 ek[10] = {
     expandedKey[0], expandedKey[1], expandedKey[2], expandedKey[3],
@@ -70,7 +72,7 @@ kernel void cn_stage2_n(
 
   uint4 buf = long_state[0];
 
-  for (uint32_t i = 0; i < threadMemorySize / 128 / 16; i++) {
+  for (uint32_t i = 0; i < threadMemorySize / 128 / GRANULARITY; i++) {
     aes_round(buf, ek[0]);
     aes_round(buf, ek[1]);
     aes_round(buf, ek[2]);

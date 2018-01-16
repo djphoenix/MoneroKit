@@ -17,6 +17,8 @@ constant static const constexpr size_t threadMemorySize = 1 << 21;
 constant static const constexpr size_t stateSize = 256;
 constant static const constexpr size_t ITER = (1 << 20);
 
+#include "MetalGranularity.h"
+
 static inline __attribute__((always_inline)) void mul128(const uint2 ca, const uint2 cb, thread uint4 &cres) {
   uint64_t ltmp[4];
   thread uint32_t *tmp = (thread uint32_t*)ltmp;
@@ -53,7 +55,7 @@ kernel void cn_stage3_n(
   
   uint4 a = *_a, b = *_b, c = *_c, t;
   
-  for(size_t i = 0; i < ITER / 2 / 16; i++) {
+  for(size_t i = 0; i < ITER / 2 / GRANULARITY; i++) {
     // Iteration 1
     p = (device uint4*)&long_state[a.x & 0x1ffff0];
     c = *p;

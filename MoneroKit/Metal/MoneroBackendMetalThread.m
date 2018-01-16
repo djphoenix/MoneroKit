@@ -22,6 +22,8 @@
 static const uint8_t MoneroMetal_metallib[] = {};
 #endif
 
+#include "MetalGranularity.h"
+
 static const size_t blobBufferSize = 128;
 static const size_t expandedKeySize = 320;
 static const size_t threadMemorySize = 1 << 21;
@@ -263,9 +265,9 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
 
         EXEC_STAGE(1, self);
         EXEC_STAGE(2_0, self);
-        for (uint8_t i = 1; i < 16; i++) EXEC_STAGE(2_n, self, i);
-        for (uint8_t i = 0; i < 16; i++) EXEC_STAGE(3_n, self);
-        for (uint8_t i = 0; i < 16; i++) EXEC_STAGE(4_n, self, i);
+        for (uint8_t i = 1; i < GRANULARITY; i++) EXEC_STAGE(2_n, self, i);
+        for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n, self);
+        for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(4_n, self, i);
         EXEC_STAGE(5, self);
         EXEC_STAGE(6, self);
 

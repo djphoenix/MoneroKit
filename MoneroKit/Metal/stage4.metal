@@ -17,6 +17,8 @@ constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t threadMemorySize = 1 << 21;
 constant static const constexpr size_t stateSize = 256;
 
+#include "MetalGranularity.h"
+
 kernel void cn_stage4_n(
                         device uint8_t *statebuf [[ buffer(0) ]],
                         device uint8_t *ekeybuf [[ buffer(1) ]],
@@ -29,7 +31,7 @@ kernel void cn_stage4_n(
   device uint4 *expandedKey = (device uint4*)(ekeybuf + idx.x * expandedKeySize + 160);
   device uint4 *long_state = (device uint4*)(membuf + idx.x * threadMemorySize) + idx.y;
   uint32_t part = (uint32_t)(*partbuf);
-  long_state += threadMemorySize / 128 / 16 * 8 * part;
+  long_state += threadMemorySize / 128 / GRANULARITY * 8 * part;
   
   thread uint4 ek[10] = {
     expandedKey[0], expandedKey[1], expandedKey[2], expandedKey[3],
@@ -39,7 +41,7 @@ kernel void cn_stage4_n(
 
   uint4 buf = *state;
   
-  for (uint32_t i = 0; i < threadMemorySize / 128 / 16; i++) {
+  for (uint32_t i = 0; i < threadMemorySize / 128 / GRANULARITY; i++) {
     buf ^= *long_state;
     aes_round(buf, ek[0]);
     aes_round(buf, ek[1]);
