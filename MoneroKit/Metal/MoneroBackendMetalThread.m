@@ -265,8 +265,11 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
 
         EXEC_STAGE(1, self);
         EXEC_STAGE(2_0, self);
+#pragma clang loop unroll(full)
         for (uint8_t i = 1; i < GRANULARITY; i++) EXEC_STAGE(2_n, self, i);
+#pragma clang loop unroll(full)
         for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n, self);
+#pragma clang loop unroll(full)
         for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(4_n, self, i);
         EXEC_STAGE(5, self);
         EXEC_STAGE(6, self);

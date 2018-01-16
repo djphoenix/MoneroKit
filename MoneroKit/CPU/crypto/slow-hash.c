@@ -398,6 +398,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
    */
   
   aes_pseudo_round(state.init, &hp_state[0], expandedKey, INIT_SIZE_BLK);
+#pragma clang loop unroll_count(64)
   for(i = 1; i < MEMORY / INIT_SIZE_BYTE; i++) {
     aes_pseudo_round(&hp_state[(i-1) * INIT_SIZE_BYTE], &hp_state[i * INIT_SIZE_BYTE], expandedKey, INIT_SIZE_BLK);
   }
@@ -410,6 +411,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
    * performs two reads and writes from the mixing buffer.
    */
   
+#pragma clang loop unroll_count(64)
   for(i = 0; i < ITER / 2; i++) {
     j = state_index(_a);
     _c = *R128(&hp_state[j]);
@@ -430,6 +432,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
    * of AES encryption to mix the random data back into the 'text' buffer.  'text'
    * was originally created with the output of Keccak1600. */
   
+#pragma clang loop unroll_count(64)
   for(i = 0; i < MEMORY / INIT_SIZE_BYTE; i++) {
     // add the xor to the pseudo round
     aes_pseudo_round_xor(state.init, state.init, expandedKey + AES_KEYEXP_SIZE, &hp_state[i * INIT_SIZE_BYTE], INIT_SIZE_BLK);
