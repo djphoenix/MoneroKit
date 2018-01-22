@@ -177,6 +177,8 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
   if ([[self.device name] isEqualToString:@"Intel HD Graphics 4000"] ||
       [[self.device name] isEqualToString:@"Apple A8 GPU"]) {
     self.batchSize = 32;
+  } else if ([[self.device name] isEqualToString:@"Apple A11 GPU"]) {
+    self.batchSize = 256;
   } else {
     self.batchSize = 128;
   }
