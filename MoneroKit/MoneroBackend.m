@@ -27,7 +27,7 @@
       MoneroBackendCPUThread *th = [[MoneroBackendCPUThread alloc] init];
       [th setBackend:self];
       [th setName:[NSString stringWithFormat:@"MoneroCPUBackend %@/%@",@(i),@(threads)]];
-      [th setQualityOfService:NSQualityOfServiceBackground];
+      [th setQualityOfService:NSQualityOfServiceUserInteractive];
       [th start];
       [arr addObject:th];
     }
@@ -42,7 +42,7 @@
       [th setBackend:self];
       [th setDevice:device];
       [th setName:[NSString stringWithFormat:@"MoneroMetalBackend %@", [device name]]];
-      [th setQualityOfService:NSQualityOfServiceBackground];
+      [th setQualityOfService:NSQualityOfServiceUserInteractive];
       [th start];
       [arr addObject:th];
     }
