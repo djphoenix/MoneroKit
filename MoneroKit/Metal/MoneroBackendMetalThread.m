@@ -170,7 +170,7 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
 
   self.library = [self.device newLibraryWithData:dispatch_data_create(MoneroMetal_metallib, sizeof(MoneroMetal_metallib), nil, nil) error:&error];
   if (error) {
-    NSLog(@"Error: %@", error);
+    NSLog(@"[Load] Error: %@", error);
     return;
   }
   
@@ -189,7 +189,7 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
     if ([func functionType] != MTLFunctionTypeKernel) continue;
     id<MTLComputePipelineState> state = [self.device newComputePipelineStateWithFunction:func error:&error];
     if (error) {
-      NSLog(@"Error: %@", error);
+      NSLog(@"[Compile: %@] Error: %@", [func name], error);
       return;
     }
     [states setObject:state forKey:name];
