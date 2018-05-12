@@ -51,7 +51,7 @@ static inline __attribute__((always_inline)) uchar4 transform_row(uchar4 row) {
 }
 
 static inline __attribute__((always_inline)) void aes_round(thread uint4 &out, const uint4 key) {
-  thread packed_uchar4 *bout = (thread packed_uchar4*)&out;
+  thread uchar4 *bout = (thread uchar4*)&out;
   uint8_t t;
 
   bout[0][0] = aes_sub_byte_value[bout[0][0]];
@@ -79,7 +79,7 @@ static inline __attribute__((always_inline)) void aes_round(thread uint4 &out, c
   bout[2][3] = aes_sub_byte_value[bout[1][3]];
   bout[1][3] = t;
 
-  __attribute__((aligned(16))) packed_uchar4 tmp[4] = {
+  __attribute__((aligned(16))) uchar4 tmp[4] = {
     transform_row(bout[0]),
     transform_row(bout[1]),
     transform_row(bout[2]),

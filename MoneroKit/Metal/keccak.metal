@@ -26,7 +26,7 @@ constant static const uint32_t keccakf_piln[24] = {
   15, 23, 19, 13, 12, 2, 20, 14, 22, 9,  6,  1
 };
 
-static inline __attribute__((always_inline)) void keccakf(state_t &st, uint32_t rounds) {
+static inline __attribute__((always_inline)) void keccakf(volatile state_t &st, uint32_t rounds) {
   uint32_t i, j, r;
   uint64_t t;
   uint64_t __attribute__((aligned(16))) bc[5];
