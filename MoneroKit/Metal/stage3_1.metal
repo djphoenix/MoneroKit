@@ -40,7 +40,9 @@ static inline __attribute__((always_inline)) void mul128(const uint2 ca, const u
   cres = uint4(tmp[6], tmp[7], tmp[0], tmp[2]);
 }
 
-kernel void cn_stage3_n(
+static constant const uint32_t v1_table = 0x75310;
+
+kernel void cn_stage3_n_v1(
                         device uint8_t *statebuf [[ buffer(0) ]],
                         device uint8_t *membuf [[ buffer(1) ]],
                         uint idx [[ thread_position_in_grid ]]
@@ -48,23 +50,34 @@ kernel void cn_stage3_n(
 {
   device uint8_t *state = (statebuf + idx * stateSize);
   device uint8_t *long_state = (membuf + idx * threadMemorySize);
+  device uint64_t *nonceptr = (device uint64_t*)(state + 200);
   device uint4 *_a = (device uint4*)(state + 208);
   device uint4 *_b = (device uint4*)(state + 224);
   device uint4 *_c = (device uint4*)(state + 240);
   device uint4 *p;
+  uint64_t nonce = *nonceptr;
   
   uint4 a = *_a, b = *_b, c = *_c, t;
   
+  uint8_t tmp, tmp0;
+  
   for(size_t i = 0; i < ITER / 2 / GRANULARITY; i++) {
+    size_t j = a.x & 0x1ffff0;
     // Iteration 1
-    p = (device uint4*)&long_state[a.x & 0x1ffff0];
+    p = (device uint4*)&long_state[j];
     c = *p;
     aes_round(c, a);
     b ^= c;
     *p = b;
-    
+
+    j += 11;
+    tmp = long_state[j];
+    tmp0 = (((tmp >> 3) & 6) | (tmp & 1)) << 1;
+    long_state[j] = tmp ^ ((v1_table >> tmp0) & 0x30);
+
     // Iteration 2
-    p = (device uint4*)&long_state[c.x & 0x1ffff0];
+    j = c.x & 0x1ffff0;
+    p = (device uint4*)&long_state[j];
     b = *p;
     mul128(*(thread uint2*)&c, *(thread uint2*)&b, t);
     ((thread uint64_t*)&a)[0] += ((const thread uint64_t*)&t)[0];
@@ -72,6 +85,9 @@ kernel void cn_stage3_n(
     *p = a;
     a ^= b;
     b = c;
+    
+    j += 8;
+    *(device uint64_t*)(long_state + j) ^= nonce;
   }
   
   *_a = a; *_b = b; *_c = c;

@@ -107,8 +107,21 @@ static inline NSError* cn_stage2_n(MoneroBackendMetalThread *self, uint8_t n) {
   return run(buffer, [self resourceLimit]);
 }
 
-static inline NSError* cn_stage3_n(MoneroBackendMetalThread *self) {
-  id<MTLComputePipelineState> state = self.computeStates[@"cn_stage3_n"];
+static inline NSError* cn_stage3_n_v0(MoneroBackendMetalThread *self) {
+  id<MTLComputePipelineState> state = self.computeStates[@"cn_stage3_n_v0"];
+  id<MTLCommandBuffer> buffer = [self.queue commandBuffer];
+  [buffer setLabel:@"cn_stage3_n"];
+  id<MTLComputeCommandEncoder> encoder = [buffer computeCommandEncoder];
+  [encoder setComputePipelineState:state];
+  [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
+  [encoder setBuffer:self.memoryBuffer offset:0 atIndex:1];
+  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder endEncoding];
+  return run(buffer, [self resourceLimit]);
+}
+
+static inline NSError* cn_stage3_n_v1(MoneroBackendMetalThread *self) {
+  id<MTLComputePipelineState> state = self.computeStates[@"cn_stage3_n_v1"];
   id<MTLCommandBuffer> buffer = [self.queue commandBuffer];
   [buffer setLabel:@"cn_stage3_n"];
   id<MTLComputeCommandEncoder> encoder = [buffer computeCommandEncoder];
@@ -164,6 +177,29 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
   }
   return nil;
 }
+
+#define EXEC_STAGE(x,...) do { \
+  if (job != self.job) goto _break; \
+  if (!error) error = cn_stage##x(__VA_ARGS__); \
+} while(0)
+
+#define metal_slow_hash(v) do { \
+  EXEC_STAGE(1, self); \
+  EXEC_STAGE(2_0, self); \
+_Pragma("clang loop unroll(full)") \
+  for (i = 1; i < GRANULARITY; i++) EXEC_STAGE(2_n, self, i); \
+  if (v > 0) { \
+_Pragma("clang loop unroll(full)") \
+    for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n_v1, self); \
+  } else { \
+_Pragma("clang loop unroll(full)") \
+    for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n_v0, self); \
+  } \
+_Pragma("clang loop unroll(full)") \
+  for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(4_n, self, i); \
+  EXEC_STAGE(5, self); \
+  EXEC_STAGE(6, self); \
+} while(0)
 
 - (void)main {
   NSError *error = nil;
@@ -226,6 +262,8 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
   struct timeval starttime, endtime;
   useconds_t worktime;
   blob_ptr = self.blobBuffer.contents;
+  uint64_t version;
+  uint8_t i;
 
   while (![self isCancelled]) {
     job = [self job];
@@ -240,7 +278,8 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
     for (size_t i = 0; i < self.batchSize; i++) {
       [job.blob getBytes:(blob_ptr + i * blobBufferSize) length:blob_len];
     }
-    
+    version = job.versionMajor > 6 ? job.versionMajor - 6 : 0;
+
     while (![self isCancelled]) {
       if (job != self.job) break;
 
@@ -260,22 +299,7 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
       }
       {
         error = nil;
-#define EXEC_STAGE(x,...) do {\
-  if (job != self.job) goto _break;\
-  if (!error) error = cn_stage##x(__VA_ARGS__);\
-} while(0)
-
-        EXEC_STAGE(1, self);
-        EXEC_STAGE(2_0, self);
-#pragma clang loop unroll(full)
-        for (uint8_t i = 1; i < GRANULARITY; i++) EXEC_STAGE(2_n, self, i);
-#pragma clang loop unroll(full)
-        for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n, self);
-#pragma clang loop unroll(full)
-        for (uint8_t i = 0; i < GRANULARITY; i++) EXEC_STAGE(4_n, self, i);
-        EXEC_STAGE(5, self);
-        EXEC_STAGE(6, self);
-
+        metal_slow_hash(version);
         if (error) {
           NSLog(@"%@", error);
           atomic_store(&hashrate, 0);

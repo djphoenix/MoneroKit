@@ -31,13 +31,30 @@ kernel void cn_stage1(
   device uint8_t *expandedKey = (ekeybuf + idx * expandedKeySize);
   uint32_t bloblen = *bloblenbuf;
   
-  keccak1600(blob, bloblen, state);
-  
-  aes_expand_key(expandedKey, state);
-  aes_expand_key(expandedKey + 160, &state[32]);
-  
+  device uint64_t *nonceptr = (device uint64_t*)(state + 200);
   device uint4 *a = (device uint4*)(state + 208);
   device uint4 *b = (device uint4*)(state + 224);
+
+  keccak1600(blob, bloblen, state);
+  
+  *nonceptr = 0;
+  if (bloblen >= 43) {
+    uint64_t x = ((const device uint64_t*)state)[24];
+    uint64_t y;
+    thread uint8_t *yb = (thread uint8_t*)&y;
+    yb[0] = blob[35];
+    yb[1] = blob[36];
+    yb[2] = blob[37];
+    yb[3] = blob[38];
+    yb[4] = blob[39];
+    yb[5] = blob[40];
+    yb[6] = blob[41];
+    yb[7] = blob[42];
+    *nonceptr = x^y;
+  }
+
+  aes_expand_key(expandedKey, state);
+  aes_expand_key(expandedKey + 160, &state[32]);
   
   *a = ((device uint4*)state)[0] ^ ((device uint4*)state)[2];
   *b = ((device uint4*)state)[1] ^ ((device uint4*)state)[3];
