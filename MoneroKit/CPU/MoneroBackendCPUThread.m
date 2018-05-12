@@ -29,6 +29,7 @@
   double limit;
   struct timeval starttime, endtime;
   useconds_t worktime, sleeptime;
+  uint64_t version;
   
   void *hashbuf = cn_slow_hash_alloc();
   
@@ -45,6 +46,7 @@
     [job.blob getBytes:blob_buffer length:sizeof(blob_buffer)];
     nonce_ptr = (uint32_t*)(blob_buffer + job.nonceOffset);
     target = job.target;
+    version = job.versionMajor > 6 ? job.versionMajor - 6 : 0;
     while (![self isCancelled]) {
       if (job != self.job) break;
       limit = self.resourceLimit;
@@ -57,7 +59,7 @@
       gettimeofday(&starttime, nil);
       nonce = [self nonce];
       memmove(nonce_ptr, &nonce, sizeof(nonce));
-      cn_slow_hash(blob_buffer, blob_len, (char*)hash.bytes, hashbuf);
+      cn_slow_hash(blob_buffer, blob_len, (char*)hash.bytes, hashbuf, version);
       gettimeofday(&endtime, nil);
       if (hash.lluints[3] < target) {
         [self handleResult:&hash withNonce:nonce forJob:job.jobId];

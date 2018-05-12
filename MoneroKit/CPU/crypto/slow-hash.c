@@ -373,7 +373,7 @@ union PACKED cn_slow_hash_state {
 void *cn_slow_hash_alloc() { return malloc(MEMORY + AES_KEYEXP_SIZE * 2); }
 
 __attribute__((target("aes")))
-void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
+void cn_slow_hash(const void *data, size_t length, char *hash, void *buf, uint64_t version) {
   uint8_t *hp_state = buf;
   uint8_t *expandedKey1 = hp_state + MEMORY;
   uint8_t *expandedKey2 = expandedKey1 + AES_KEYEXP_SIZE;
@@ -383,6 +383,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
   RDATA_ALIGN16 uint64_t hi, lo;
   
   size_t i, j;
+  uint8_t tmp, tmp0;
   
   static void (*const extra_hashes[4])(const void *, size_t, char *) = {
     hash_extra_blake, hash_extra_groestl, hash_extra_jh, hash_extra_skein
@@ -391,6 +392,9 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
   /* CryptoNight Step 1:  Use Keccak1600 to initialize the 'state' (and 'text') buffers from the data. */
   keccak1600(data, length, &state.hs.b[0]);
 
+  if (version > 0) { assert(length >= 43); }
+  const uint64_t tweak1_2 = version > 0 ? (state.hs.w[24] ^ (*((const uint64_t*)(((const uint8_t*)data)+35)))) : 0;
+  
   aes_expand_key(state.hs.b, expandedKey1);
   aes_expand_key(&state.hs.b[32], expandedKey2);
 
@@ -419,6 +423,14 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
     _c = aesenc(_c, _a);
     _b = xor128(_b, _c);
     *R128(&hp_state[j]) = _b;
+
+    if (version > 0) {
+      j += 11;
+      tmp = hp_state[j];
+      static const uint32_t table = 0x75310;
+      tmp0 = (uint8_t)((((tmp >> 3) & 6) | (tmp & 1)) << 1);
+      hp_state[j] = tmp ^ ((table >> tmp0) & 0x30);
+    }
     
     j = state_index(_c);
     _b = *R128(&hp_state[j]);
@@ -427,6 +439,11 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
     *R128(&hp_state[j]) = _a;
     _a = xor128(_a, _b);
     _b = _c;
+
+    if (version > 0) {
+      j += 8;
+      *(uint64_t*)(hp_state + j) ^= tweak1_2;
+    }
   }
   
   /* CryptoNight Step 4:  Sequentially pass through the mixing buffer and use 10 rounds
