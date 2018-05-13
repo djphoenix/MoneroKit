@@ -258,7 +258,7 @@ static const int rcon[] = {
   0x0c0f0e0d,0x0c0f0e0d,0x0c0f0e0d,0x0c0f0e0d,  // rotate-n-splat
   0x1b,0x1b,0x1b,0x1b };
 
-static inline void aes_expand_key(const uint8_t *key, uint8_t *expandedKey) {
+static __attribute__((noinline)) void aes_expand_key(const uint8_t *key, uint8_t *expandedKey) {
   __asm__(
           "  eor  v0.16b,v0.16b,v0.16b\n"
           "  ld1  {v3.16b},[%0],#16\n"
@@ -370,13 +370,14 @@ union PACKED cn_slow_hash_state {
   };
 };
 
-void *cn_slow_hash_alloc() { return malloc(MEMORY); }
+void *cn_slow_hash_alloc() { return malloc(MEMORY + AES_KEYEXP_SIZE * 2); }
 
 __attribute__((target("aes")))
 void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
   uint8_t *hp_state = buf;
+  uint8_t *expandedKey1 = hp_state + MEMORY;
+  uint8_t *expandedKey2 = expandedKey1 + AES_KEYEXP_SIZE;
 
-  RDATA_ALIGN16 uint8_t expandedKey[AES_KEYEXP_SIZE * 2];
   RDATA_ALIGN16 REG128 _a, _b, _c;
   RDATA_ALIGN16 union cn_slow_hash_state state;
   RDATA_ALIGN16 uint64_t hi, lo;
@@ -390,17 +391,17 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
   /* CryptoNight Step 1:  Use Keccak1600 to initialize the 'state' (and 'text') buffers from the data. */
   keccak1600(data, length, &state.hs.b[0]);
 
-  aes_expand_key(state.hs.b, expandedKey);
-  aes_expand_key(&state.hs.b[32], expandedKey + AES_KEYEXP_SIZE);
+  aes_expand_key(state.hs.b, expandedKey1);
+  aes_expand_key(&state.hs.b[32], expandedKey2);
 
   /* CryptoNight Step 2:  Iteratively encrypt the results from Keccak to fill
    * the 2MB large random access buffer.
    */
   
-  aes_pseudo_round(state.init, &hp_state[0], expandedKey, INIT_SIZE_BLK);
+  aes_pseudo_round(state.init, &hp_state[0], expandedKey1, INIT_SIZE_BLK);
 #pragma clang loop unroll_count(64)
   for(i = 1; i < MEMORY / INIT_SIZE_BYTE; i++) {
-    aes_pseudo_round(&hp_state[(i-1) * INIT_SIZE_BYTE], &hp_state[i * INIT_SIZE_BYTE], expandedKey, INIT_SIZE_BLK);
+    aes_pseudo_round(&hp_state[(i-1) * INIT_SIZE_BYTE], &hp_state[i * INIT_SIZE_BYTE], expandedKey1, INIT_SIZE_BLK);
   }
   
   _a = xor128(*R128(&state.k[ 0]), *R128(&state.k[32]));
@@ -435,7 +436,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf) {
 #pragma clang loop unroll_count(64)
   for(i = 0; i < MEMORY / INIT_SIZE_BYTE; i++) {
     // add the xor to the pseudo round
-    aes_pseudo_round_xor(state.init, state.init, expandedKey + AES_KEYEXP_SIZE, &hp_state[i * INIT_SIZE_BYTE], INIT_SIZE_BLK);
+    aes_pseudo_round_xor(state.init, state.init, expandedKey2, &hp_state[i * INIT_SIZE_BYTE], INIT_SIZE_BLK);
   }
   
   /* CryptoNight Step 5:  Apply Keccak to the state again, and then
