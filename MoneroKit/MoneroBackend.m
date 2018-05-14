@@ -84,8 +84,10 @@
 - (void)handleResult:(const struct MoneroHash*)hash withNonce:(uint32_t)nonce forJob:(NSString*)jobId {
   if (![jobId isEqualToString:self.currentJob.jobId]) return;
   id<MoneroBackendDelegate> delegate = [self delegate];
+  struct MoneroHash cphash;
+  memcpy(&cphash, hash, sizeof(struct MoneroHash));
   dispatch_async(self.delegateQueue, ^{
-    [delegate foundResult:hash withNonce:nonce forJobId:jobId];
+    [delegate foundResult:&cphash withNonce:nonce forJobId:jobId];
   });
 }
 
