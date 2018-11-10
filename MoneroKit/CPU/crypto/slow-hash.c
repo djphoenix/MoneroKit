@@ -33,6 +33,7 @@
 #include "int-util.h"
 #include "hash-ops.h"
 #include "keccak.h"
+#include "math.h"
 
 #pragma mark - Global defines
 
@@ -61,6 +62,8 @@ enum {
 typedef __m128i REG128;
 
 #define state_index(x) ((((uint32_t)x[0]) & ((TOTALBLOCKS - 1) << 4)))
+
+static const __m128i zero = {0};
 
 #define xor128(a, b) _mm_xor_si128((a), (b))
 #define mul128(a, b, hi, lo) __asm__ ("mulq %3\n\t" : "=d"(hi), "=a"(lo) : "%a" (a[0]), "%b" (b[0]) : "cc");
@@ -310,7 +313,7 @@ static __attribute__((noinline)) void aes_expand_key(const uint8_t *key, uint8_t
  * at the last step, to provide the AddRoundKey that the ARM instructions omit.
  */
 static INLINE void aes_pseudo_round(const uint8_t *in, uint8_t *out, const uint8_t *expandedKey, int nblocks) {
-  const uint8x16_t *k = (const uint8x16_t *)expandedKey, zero = {0};
+  const uint8x16_t *k = (const uint8x16_t *)expandedKey;
   uint8x16_t tmp;
   int i;
   
@@ -378,7 +381,7 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf, uint64
   uint8_t *expandedKey1 = hp_state + MEMORY;
   uint8_t *expandedKey2 = expandedKey1 + AES_KEYEXP_SIZE;
 
-  RDATA_ALIGN16 REG128 _a, _b, _c;
+  RDATA_ALIGN16 REG128 _a, _b, _b1, _c, _c1;
   RDATA_ALIGN16 union cn_slow_hash_state state;
   RDATA_ALIGN16 uint64_t hi, lo;
   
@@ -392,11 +395,20 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf, uint64
   /* CryptoNight Step 1:  Use Keccak1600 to initialize the 'state' (and 'text') buffers from the data. */
   keccak1600(data, length, &state.hs.b[0]);
 
-  if (version > 0) { assert(length >= 43); }
-  const uint64_t tweak1_2 = version > 0 ? (state.hs.w[24] ^ (*((const uint64_t*)(((const uint8_t*)data)+35)))) : 0;
-  
   aes_expand_key(state.hs.b, expandedKey1);
   aes_expand_key(&state.hs.b[32], expandedKey2);
+
+  if (version == 1) { assert(length >= 43); }
+  const uint64_t tweak1_2 = version == 1 ? (state.hs.w[24] ^ (*((const uint64_t*)(((const uint8_t*)data)+35)))) : 0;
+
+  uint64_t division_result = 0, sqrt_result = 0;
+  if (version >= 2) {
+    _b1 = xor128(*R128(&state.hs.w[8]), *R128(&state.hs.w[10]));
+    division_result = state.hs.w[12];
+    sqrt_result = state.hs.w[13];
+  } else {
+    _b1 = zero;
+  }
 
   /* CryptoNight Step 2:  Iteratively encrypt the results from Keccak to fill
    * the 2MB large random access buffer.
@@ -421,29 +433,76 @@ void cn_slow_hash(const void *data, size_t length, char *hash, void *buf, uint64
     j = state_index(_a);
     _c = *R128(&hp_state[j]);
     _c = aesenc(_c, _a);
-    _b = xor128(_b, _c);
-    *R128(&hp_state[j]) = _b;
-
-    if (version > 0) {
-      j += 11;
-      tmp = hp_state[j];
+    if (version >= 2) {
+      const REG128 chunk1 = *R128(hp_state + (j ^ 0x10));
+      const REG128 chunk2 = *R128(hp_state + (j ^ 0x20));
+      const REG128 chunk3 = *R128(hp_state + (j ^ 0x30));
+      ((uint64_t*)&chunk1)[0] += ((uint64_t*)&_b)[0];
+      ((uint64_t*)&chunk1)[1] += ((uint64_t*)&_b)[1];
+      ((uint64_t*)&chunk2)[0] += ((uint64_t*)&_a)[0];
+      ((uint64_t*)&chunk2)[1] += ((uint64_t*)&_a)[1];
+      ((uint64_t*)&chunk3)[0] += ((uint64_t*)&_b1)[0];
+      ((uint64_t*)&chunk3)[1] += ((uint64_t*)&_b1)[1];
+      *R128(hp_state + (j ^ 0x10)) = chunk3;
+      *R128(hp_state + (j ^ 0x20)) = chunk1;
+      *R128(hp_state + (j ^ 0x30)) = chunk2;
+    }
+    *R128(&hp_state[j]) = xor128(_b, _c);
+    if (version == 1) {
+      tmp = hp_state[j+11];
       static const uint32_t table = 0x75310;
       tmp0 = (uint8_t)((((tmp >> 3) & 6) | (tmp & 1)) << 1);
-      hp_state[j] = tmp ^ ((table >> tmp0) & 0x30);
+      hp_state[j+11] = tmp ^ ((table >> tmp0) & 0x30);
     }
-    
+
     j = state_index(_c);
-    _b = *R128(&hp_state[j]);
-    mul128(_c, _b, hi, lo);
+    _c1 = *R128(&hp_state[j]);
+    if (version >= 2) {
+      ((uint64_t*)(&_c1))[0] ^= division_result ^ (sqrt_result << 32);
+      const uint64_t dividend = ((uint64_t*)(&_c))[1];
+      const uint32_t divisor = (uint32_t)(((uint64_t*)(&_c))[0] + (uint32_t)(sqrt_result << 1)) | 0x80000001UL;
+      division_result = ((uint32_t)(dividend / divisor)) + (((uint64_t)(dividend % divisor)) << 32);
+      uint64_t sqrt_input = ((uint64_t*)(&_c))[0] + division_result;
+
+      uint64_t r = 1ULL << 63;
+      for (uint64_t bit = 1ULL << 60; bit; bit >>= 2) {
+        if (sqrt_input < r + bit) {
+          r = r >> 1;
+        } else {
+          sqrt_input = (sqrt_input - (r + bit));
+          r = (r + bit * 2) >> 1;
+        }
+      }
+      sqrt_result = (uint32_t)(r * 2 + ((sqrt_input > r) ? 1 : 0));
+    }
+    mul128(_c, _c1, hi, lo);
+    if (version >= 2) {
+      *((uint64_t*)(hp_state + (j ^ 0x10)) + 0) ^= hi;
+      *((uint64_t*)(hp_state + (j ^ 0x10)) + 1) ^= lo;
+      hi ^= *((uint64_t*)(hp_state + (j ^ 0x20)) + 0);
+      lo ^= *((uint64_t*)(hp_state + (j ^ 0x20)) + 1);
+
+      const REG128 chunk1 = *R128(hp_state + (j ^ 0x10));
+      const REG128 chunk2 = *R128(hp_state + (j ^ 0x20));
+      const REG128 chunk3 = *R128(hp_state + (j ^ 0x30));
+      ((uint64_t*)&chunk1)[0] += ((uint64_t*)&_b)[0];
+      ((uint64_t*)&chunk1)[1] += ((uint64_t*)&_b)[1];
+      ((uint64_t*)&chunk2)[0] += ((uint64_t*)&_a)[0];
+      ((uint64_t*)&chunk2)[1] += ((uint64_t*)&_a)[1];
+      ((uint64_t*)&chunk3)[0] += ((uint64_t*)&_b1)[0];
+      ((uint64_t*)&chunk3)[1] += ((uint64_t*)&_b1)[1];
+      *R128(hp_state + (j ^ 0x10)) = chunk3;
+      *R128(hp_state + (j ^ 0x20)) = chunk1;
+      *R128(hp_state + (j ^ 0x30)) = chunk2;
+    }
     ((uint64_t*)&_a)[0] += hi; ((uint64_t*)&_a)[1] += lo;
     *R128(&hp_state[j]) = _a;
-    _a = xor128(_a, _b);
-    _b = _c;
-
-    if (version > 0) {
-      j += 8;
-      *(uint64_t*)(hp_state + j) ^= tweak1_2;
+    _a = xor128(_a, _c1);
+    if (version == 1) {
+      *(uint64_t*)(hp_state + j + 8) ^= tweak1_2;
     }
+    _b1 = _b;
+    _b = _c;
   }
   
   /* CryptoNight Step 4:  Sequentially pass through the mixing buffer and use 10 rounds

@@ -739,7 +739,7 @@
 				MACH_O_TYPE = staticlib;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				VALID_ARCHS = "x86_64 arm64";
+				VALID_ARCHS = "x86_64 arm64 arm64e";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -762,7 +762,7 @@
 				MACH_O_TYPE = staticlib;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				VALID_ARCHS = "x86_64 arm64";
+				VALID_ARCHS = "x86_64 arm64 arm64e";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
