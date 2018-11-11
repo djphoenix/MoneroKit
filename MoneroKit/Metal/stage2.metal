@@ -15,7 +15,7 @@ using namespace metal;
 
 constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t threadMemorySize = 1 << 21;
-constant static const constexpr size_t stateSize = 256;
+constant static const constexpr size_t stateSize = 320;
 
 kernel void cn_stage2_0(
                         device uint8_t *statebuf [[ buffer(0) ]],

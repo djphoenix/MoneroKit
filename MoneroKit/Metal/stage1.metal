@@ -14,7 +14,7 @@ using namespace metal;
 
 constant static const constexpr size_t blobBufferSize = 128;
 constant static const constexpr size_t expandedKeySize = 320;
-constant static const constexpr size_t stateSize = 256;
+constant static const constexpr size_t stateSize = 320;
 
 kernel void cn_stage1(
                       device uint8_t *blobbuf [[ buffer(0) ]],
@@ -32,6 +32,9 @@ kernel void cn_stage1(
   device uint2 *nonceptr = (device uint2*)(state + 200);
   device uint4 *a = (device uint4*)(state + 208);
   device uint4 *b = (device uint4*)(state + 224);
+  device uint4 *b1 = (device uint4*)(state + 240);
+  device uint2 *division_result = (device uint2*)(state + 256);
+  device uint2 *sqrt_result = (device uint2*)(state + 264);
 
   keccak1600(blob, bloblen, state);
   
@@ -56,5 +59,9 @@ kernel void cn_stage1(
   
   *a = ((device uint4*)state)[0] ^ ((device uint4*)state)[2];
   *b = ((device uint4*)state)[1] ^ ((device uint4*)state)[3];
+  *b1 = ((device uint4*)state)[4] ^ ((device uint4*)state)[5];
+
+  *division_result = ((device uint2*)state)[12];
+  *sqrt_result = ((device uint2*)state)[13];
 }
 

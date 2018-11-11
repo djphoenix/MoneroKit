@@ -28,7 +28,7 @@ static const size_t blobBufferSize = 128;
 static const size_t expandedKeySize = 320;
 static const size_t threadMemorySize = 1 << 21;
 static const size_t hashSize = 32;
-static const size_t stateSize = 256;
+static const size_t stateSize = 320;
 
 @interface MoneroBackendMetalThread ()
 @property (atomic) size_t batchSize;
@@ -133,6 +133,19 @@ static inline NSError* cn_stage3_n_v1(MoneroBackendMetalThread *self) {
   return run(buffer, [self resourceLimit]);
 }
 
+static inline NSError* cn_stage3_n_v2(MoneroBackendMetalThread *self) {
+  id<MTLComputePipelineState> state = self.computeStates[@"cn_stage3_n_v2"];
+  id<MTLCommandBuffer> buffer = [self.queue commandBuffer];
+  [buffer setLabel:@"cn_stage3_n"];
+  id<MTLComputeCommandEncoder> encoder = [buffer computeCommandEncoder];
+  [encoder setComputePipelineState:state];
+  [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
+  [encoder setBuffer:self.memoryBuffer offset:0 atIndex:1];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder endEncoding];
+  return run(buffer, [self resourceLimit]);
+}
+
 static inline NSError* cn_stage4_n(MoneroBackendMetalThread *self, uint8_t n) {
   *(uint8_t*)[self.partBuffer contents] = n;
   id<MTLComputePipelineState> state = self.computeStates[@"cn_stage4_n"];
@@ -188,9 +201,12 @@ static inline NSError* cn_stage6(MoneroBackendMetalThread *self) {
   EXEC_STAGE(2_0, self); \
 _Pragma("clang loop unroll(full)") \
   for (i = 1; i < GRANULARITY; i++) EXEC_STAGE(2_n, self, i); \
-  if (v > 0) { \
+  if (v == 1) { \
 _Pragma("clang loop unroll(full)") \
     for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n_v1, self); \
+  } else if (v >= 2) { \
+_Pragma("clang loop unroll(full)") \
+    for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n_v2, self); \
   } else { \
 _Pragma("clang loop unroll(full)") \
     for (i = 0; i < GRANULARITY; i++) EXEC_STAGE(3_n_v0, self); \
@@ -230,6 +246,17 @@ _Pragma("clang loop unroll(full)") \
     NSLog(@"Metal[%@]: V1 passed", [self.device name]);
   } else {
     NSLog(@"Metal[%@]: V1 failed", [self.device name]);
+  }
+
+  *((uint32_t*)self.blobLenBuffer.contents) = 47;
+  for (size_t i = 0; i < self.batchSize; i++) {
+    memcpy(blob_ptr + i * blobBufferSize, (const uint8_t[]){0x69, 0x72, 0x75, 0x72, 0x65, 0x20, 0x64, 0x6f, 0x6c, 0x6f, 0x72, 0x20, 0x69, 0x6e, 0x20, 0x72, 0x65, 0x70, 0x72, 0x65, 0x68, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x69, 0x74, 0x20, 0x69, 0x6e, 0x20, 0x76, 0x6f, 0x6c, 0x75, 0x70, 0x74, 0x61, 0x74, 0x65, 0x20, 0x76, 0x65, 0x6c, 0x69, 0x74}, 47);
+  }
+  metal_slow_hash(2);
+  if (memcmp(self.hashBuffer.contents, (const uint8_t[]){ 0x42, 0x2f, 0x8c, 0xfe, 0x80, 0x60, 0xcf, 0x6c, 0x3d, 0x9f, 0xd6, 0x6f, 0x68, 0xe3, 0xc9, 0x97, 0x7a, 0xdb, 0x68, 0x3a, 0xea, 0x27, 0x88, 0x02, 0x93, 0x08, 0xbb, 0xe9, 0xbc, 0x50, 0xd7, 0x28 }, 32) == 0) {
+    NSLog(@"Metal[%@]: V2 passed", [self.device name]);
+  } else {
+    NSLog(@"Metal[%@]: V2 failed", [self.device name]);
   }
 
   self.batchSize = batch;

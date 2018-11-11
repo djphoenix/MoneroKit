@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D09C74BB20ABC5EA00477AAC /* stage3_1.metal in Sources */ = {isa = PBXBuildFile; fileRef = D09C74BA20ABC5E000477AAC /* stage3_1.metal */; };
+		D0A27E9A2197870E0044481E /* stage3_2.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0A27E992197861D0044481E /* stage3_2.metal */; };
 		D0E022472005B62E0054390A /* stage1.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E0221E2005B5520054390A /* stage1.metal */; };
 		D0E022482005B62E0054390A /* stage2.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E022212005B5520054390A /* stage2.metal */; };
 		D0E022492005B62E0054390A /* stage3_0.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0E0221D2005B5520054390A /* stage3_0.metal */; };
@@ -73,6 +74,7 @@
 		D09C74BA20ABC5E000477AAC /* stage3_1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage3_1.metal; sourceTree = "<group>"; };
 		D0A27E97219783800044481E /* u64.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = u64.metal; sourceTree = "<group>"; };
 		D0A27E98219785B60044481E /* mul128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mul128.metal; sourceTree = "<group>"; };
+		D0A27E992197861D0044481E /* stage3_2.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage3_2.metal; sourceTree = "<group>"; };
 		D0E0220D2005B35C0054390A /* MoneroMetal.metallib */ = {isa = PBXFileReference; explicitFileType = "archive.metal-library"; includeInIndex = 0; path = MoneroMetal.metallib; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0E022162005B5520054390A /* NSData+hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+hex.h"; sourceTree = "<group>"; };
 		D0E022172005B5520054390A /* MoneroBackend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneroBackend.m; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				D0E022212005B5520054390A /* stage2.metal */,
 				D0E0221D2005B5520054390A /* stage3_0.metal */,
 				D09C74BA20ABC5E000477AAC /* stage3_1.metal */,
+				D0A27E992197861D0044481E /* stage3_2.metal */,
 				D0E022202005B5520054390A /* stage4.metal */,
 				D0E0221A2005B5520054390A /* stage5.metal */,
 			);
@@ -490,6 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A27E9A2197870E0044481E /* stage3_2.metal in Sources */,
 				D0E022492005B62E0054390A /* stage3_0.metal in Sources */,
 				D0E0224A2005B62E0054390A /* stage4.metal in Sources */,
 				D0E022472005B62E0054390A /* stage1.metal in Sources */,

@@ -13,7 +13,7 @@ using namespace metal;
 
 constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t threadMemorySize = 1 << 21;
-constant static const constexpr size_t stateSize = 256;
+constant static const constexpr size_t stateSize = 320;
 
 #include "MetalGranularity.h"
 

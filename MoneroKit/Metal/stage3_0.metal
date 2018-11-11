@@ -14,7 +14,7 @@ using namespace metal;
 #include "mul128.metal"
 
 constant static const constexpr size_t threadMemorySize = 1 << 21;
-constant static const constexpr size_t stateSize = 256;
+constant static const constexpr size_t stateSize = 320;
 constant static const constexpr size_t ITER = (1 << 20);
 
 #include "MetalGranularity.h"

@@ -11,7 +11,7 @@ using namespace metal;
 
 #include "keccak.metal"
 
-constant static const constexpr size_t stateSize = 256;
+constant static const constexpr size_t stateSize = 320;
 
 kernel void cn_stage5(
                       device uint8_t *statebuf [[ buffer(0) ]],
