@@ -2,10 +2,11 @@
 #define HASH_DATA_AREA 136
 #define ROTL64(x, y) (((x) << (y)) | ((x) >> (64 - (y))))
 
-typedef size_t uint64_t;
-typedef uint64_t state_t[25];
+#include "u64.metal"
 
-constant static const uint64_t keccakf_rndc[24] = {
+typedef _uint64_t state_t[25];
+
+constant static const _uint64_t keccakf_rndc[24] = {
   0x0000000000000001, 0x0000000000008082, 0x800000000000808a,
   0x8000000080008000, 0x000000000000808b, 0x0000000080000001,
   0x8000000080008081, 0x8000000000008009, 0x000000000000008a,
@@ -28,8 +29,8 @@ constant static const uint32_t keccakf_piln[24] = {
 
 static inline __attribute__((always_inline)) void keccakf(volatile state_t &st, uint32_t rounds) {
   uint32_t i, j, r;
-  uint64_t t;
-  uint64_t __attribute__((aligned(16))) bc[5];
+  _uint64_t t;
+  _uint64_t __attribute__((aligned(16))) bc[5];
   
   for (r = 0; r < rounds; r++) {
     for (i = 0; i < 5; i++)
@@ -90,7 +91,7 @@ static inline __attribute__((always_inline)) void keccak(const device uint8_t *i
   for (i = 0; i < sizeof(st) / 8; i++) st[i] = 0;
 
   for ( ; inlen >= rsiz; inlen -= rsiz, inoff += rsiz) {
-    for (i = 0; i < rsizw; i++) st[i] ^= ((const device uint64_t*)(in + inoff))[i];
+    for (i = 0; i < rsizw; i++) st[i] ^= ((const device _uint64_t*)(in + inoff))[i];
     keccakf(st, KECCAK_ROUNDS);
   }
 
@@ -99,7 +100,7 @@ static inline __attribute__((always_inline)) void keccak(const device uint8_t *i
   temp[inlen++] = 1;
   for (i = 0; i < rsiz - inlen; i++) ((thread uint8_t*)temp)[inlen + i] = 0;
   temp[rsiz - 1] |= 0x80;
-  for (i = 0; i < rsizw; i++) st[i] ^= ((const thread uint64_t*)temp)[i];
+  for (i = 0; i < rsizw; i++) st[i] ^= ((const thread _uint64_t*)temp)[i];
   keccakf(st, KECCAK_ROUNDS);
 
   for (i = 0; i < mdlen; i++) md[i] = ((const thread uint8_t*)st)[i];

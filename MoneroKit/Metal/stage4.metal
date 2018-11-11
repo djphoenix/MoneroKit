@@ -11,8 +11,6 @@ using namespace metal;
 
 #include "aes.metal"
 
-typedef size_t uint64_t;
-
 constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t threadMemorySize = 1 << 21;
 constant static const constexpr size_t stateSize = 256;

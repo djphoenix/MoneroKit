@@ -12,8 +12,6 @@ using namespace metal;
 #include "aes.metal"
 #include "keccak.metal"
 
-typedef size_t uint64_t;
-
 constant static const constexpr size_t blobBufferSize = 128;
 constant static const constexpr size_t expandedKeySize = 320;
 constant static const constexpr size_t stateSize = 256;
@@ -31,7 +29,7 @@ kernel void cn_stage1(
   device uint8_t *expandedKey = (ekeybuf + idx * expandedKeySize);
   uint32_t bloblen = *bloblenbuf;
   
-  device uint64_t *nonceptr = (device uint64_t*)(state + 200);
+  device uint2 *nonceptr = (device uint2*)(state + 200);
   device uint4 *a = (device uint4*)(state + 208);
   device uint4 *b = (device uint4*)(state + 224);
 
@@ -39,9 +37,9 @@ kernel void cn_stage1(
   
   *nonceptr = 0;
   if (bloblen >= 43) {
-    uint64_t x = ((const device uint64_t*)state)[24];
-    uint64_t y;
-    thread uint8_t *yb = (thread uint8_t*)&y;
+    uint2 x = ((const device uint2*)state)[24];
+    volatile thread uint2 y;
+    volatile thread uint8_t *yb = (volatile thread uint8_t*)&y;
     yb[0] = blob[35];
     yb[1] = blob[36];
     yb[2] = blob[37];

@@ -73,7 +73,7 @@ static inline NSError* cn_stage1(MoneroBackendMetalThread *self) {
   [encoder setBuffer:self.blobLenBuffer offset:0 atIndex:1];
   [encoder setBuffer:self.stateBuffer offset:0 atIndex:2];
   [encoder setBuffer:self.expKeyBuffer offset:0 atIndex:3];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -87,7 +87,7 @@ static inline NSError* cn_stage2_0(MoneroBackendMetalThread *self) {
   [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
   [encoder setBuffer:self.expKeyBuffer offset:0 atIndex:1];
   [encoder setBuffer:self.memoryBuffer offset:0 atIndex:2];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -102,7 +102,7 @@ static inline NSError* cn_stage2_n(MoneroBackendMetalThread *self, uint8_t n) {
   [encoder setBuffer:self.expKeyBuffer offset:0 atIndex:0];
   [encoder setBuffer:self.memoryBuffer offset:0 atIndex:1];
   [encoder setBuffer:self.partBuffer offset:0 atIndex:2];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -115,7 +115,7 @@ static inline NSError* cn_stage3_n_v0(MoneroBackendMetalThread *self) {
   [encoder setComputePipelineState:state];
   [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
   [encoder setBuffer:self.memoryBuffer offset:0 atIndex:1];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -128,7 +128,7 @@ static inline NSError* cn_stage3_n_v1(MoneroBackendMetalThread *self) {
   [encoder setComputePipelineState:state];
   [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
   [encoder setBuffer:self.memoryBuffer offset:0 atIndex:1];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -144,7 +144,7 @@ static inline NSError* cn_stage4_n(MoneroBackendMetalThread *self, uint8_t n) {
   [encoder setBuffer:self.expKeyBuffer offset:0 atIndex:1];
   [encoder setBuffer:self.memoryBuffer offset:0 atIndex:2];
   [encoder setBuffer:self.partBuffer offset:0 atIndex:3];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 8, 1)];
   [encoder endEncoding];
   
   return run(buffer, [self resourceLimit]);
@@ -157,7 +157,7 @@ static inline NSError* cn_stage5(MoneroBackendMetalThread *self) {
   id<MTLComputeCommandEncoder> encoder = [buffer computeCommandEncoder];
   [encoder setComputePipelineState:state];
   [encoder setBuffer:self.stateBuffer offset:0 atIndex:0];
-  [encoder dispatchThreadgroups:MTLSizeMake(self.batchSize / [state threadExecutionWidth], 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
+  [encoder dispatchThreadgroups:MTLSizeMake(MAX(1, self.batchSize / [state threadExecutionWidth]), 1, 1) threadsPerThreadgroup:MTLSizeMake([state threadExecutionWidth], 1, 1)];
   [encoder endEncoding];
   return run(buffer, [self resourceLimit]);
 }
@@ -200,6 +200,45 @@ _Pragma("clang loop unroll(full)") \
   EXEC_STAGE(5, self); \
   EXEC_STAGE(6, self); \
 } while(0)
+
+#if defined DEBUG && DEBUG
+- (void)performTests {
+  NSError *error = nil;
+  uint8_t i;
+  MoneroBackendJob *job = [self job];
+  size_t batch = self.batchSize;
+  self.batchSize = 1;
+
+  uint8_t *blob_ptr = self.blobBuffer.contents;
+  *((uint32_t*)self.blobLenBuffer.contents) = 21;
+  for (size_t i = 0; i < self.batchSize; i++) {
+    memcpy(blob_ptr + i * blobBufferSize, (const uint8_t[]){0x64, 0x65, 0x20, 0x6f, 0x6d, 0x6e, 0x69, 0x62, 0x75, 0x73, 0x20, 0x64, 0x75, 0x62, 0x69, 0x74, 0x61, 0x6e, 0x64, 0x75, 0x6d}, 21);
+  }
+  metal_slow_hash(0);
+  if (memcmp(self.hashBuffer.contents, (const uint8_t[]){ 0x2f, 0x8e, 0x3d, 0xf4, 0x0b, 0xd1, 0x1f, 0x9a, 0xc9, 0x0c, 0x74, 0x3c, 0xa8, 0xe3, 0x2b, 0xb3, 0x91, 0xda, 0x4f, 0xb9, 0x86, 0x12, 0xaa, 0x3b, 0x6c, 0xdc, 0x63, 0x9e, 0xe0, 0x0b, 0x31, 0xf5 }, 32) == 0) {
+    NSLog(@"Metal[%@]: V0 passed", [self.device name]);
+  } else {
+    NSLog(@"Metal[%@]: V0 failed", [self.device name]);
+  }
+
+  *((uint32_t*)self.blobLenBuffer.contents) = 96;
+  for (size_t i = 0; i < self.batchSize; i++) {
+    memcpy(blob_ptr + i * blobBufferSize, (const uint8_t[]){0x37, 0xa6, 0x36, 0xd7, 0xda, 0xfd, 0xf2, 0x59, 0xb7, 0x28, 0x7e, 0xdd, 0xca, 0x2f, 0x58, 0x09, 0x9e, 0x98, 0x61, 0x9d, 0x2f, 0x99, 0xbd, 0xb8, 0x96, 0x9d, 0x7b, 0x14, 0x49, 0x81, 0x02, 0xcc, 0x06, 0x52, 0x01, 0xc8, 0xbe, 0x90, 0xbd, 0x77, 0x73, 0x23, 0xf4, 0x49, 0x84, 0x8b, 0x21, 0x5d, 0x29, 0x77, 0xc9, 0x2c, 0x4c, 0x1c, 0x2d, 0xa3, 0x6a, 0xb4, 0x6b, 0x2e, 0x38, 0x96, 0x89, 0xed, 0x97, 0xc1, 0x8f, 0xec, 0x08, 0xcd, 0x3b, 0x03, 0x23, 0x5c, 0x5e, 0x4c, 0x62, 0xa3, 0x7a, 0xd8, 0x8c, 0x7b, 0x67, 0x93, 0x24, 0x95, 0xa7, 0x10, 0x90, 0xe8, 0x5d, 0xd4, 0x02, 0x0a, 0x93, 0x00}, 96);
+  }
+  metal_slow_hash(1);
+  if (memcmp(self.hashBuffer.contents, (const uint8_t[]){ 0x61, 0x3e, 0x63, 0x85, 0x05, 0xba, 0x1f, 0xd0, 0x5f, 0x42, 0x8d, 0x5c, 0x9f, 0x8e, 0x08, 0xf8, 0x16, 0x56, 0x14, 0x34, 0x2d, 0xac, 0x41, 0x9a, 0xdc, 0x6a, 0x47, 0xdc, 0xe2, 0x57, 0xeb, 0x3e }, 32) == 0) {
+    NSLog(@"Metal[%@]: V1 passed", [self.device name]);
+  } else {
+    NSLog(@"Metal[%@]: V1 failed", [self.device name]);
+  }
+
+  self.batchSize = batch;
+  return;
+_break:
+  self.batchSize = batch;
+  NSLog(@"Test error: %@", error);
+}
+#endif
 
 - (void)main {
   NSError *error = nil;
@@ -253,6 +292,10 @@ _Pragma("clang loop unroll(full)") \
   }
 
   NSLog(@"Metal thread: %@, batch size: %@", [self.device name], @(self.batchSize));
+
+#if defined DEBUG && DEBUG
+  [self performTests];
+#endif
 
   MoneroBackendJob *job;
   size_t blob_len;

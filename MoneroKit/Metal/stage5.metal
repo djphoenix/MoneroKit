@@ -32,7 +32,7 @@ kernel void cn_stage5(
   ((thread uint4*)st)[9] = ((device uint4*)state)[9];
   ((thread uint4*)st)[10] = ((device uint4*)state)[10];
   ((thread uint4*)st)[11] = ((device uint4*)state)[11];
-  ((thread uint64_t*)st)[24] = ((device uint64_t*)state)[24];
+  ((thread uint2*)st)[24] = ((device uint2*)state)[24];
   keccakf(st, 24);
   ((device uint4*)state)[0] = ((thread uint4*)st)[0];
   ((device uint4*)state)[1] = ((thread uint4*)st)[1];
@@ -46,5 +46,5 @@ kernel void cn_stage5(
   ((device uint4*)state)[9] = ((thread uint4*)st)[9];
   ((device uint4*)state)[10] = ((thread uint4*)st)[10];
   ((device uint4*)state)[11] = ((thread uint4*)st)[11];
-  ((device uint64_t*)state)[24] = ((thread uint64_t*)st)[24];
+  ((device uint2*)state)[24] = ((thread uint2*)st)[24];
 }
