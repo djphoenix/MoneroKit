@@ -18,6 +18,7 @@
   uint32_t _nonce;
   struct MoneroHash _merkleRootHash;
   uint64_t _transactionsCount;
+  uint64_t _height;
 }
 
 - (void)setBlob:(NSData *)blob {

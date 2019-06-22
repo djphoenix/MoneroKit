@@ -21,6 +21,7 @@ struct MoneroHash {
 @property (nonatomic, copy) NSData *blob;
 @property (nonatomic) uint64_t target;
 @property (nonatomic) BOOL nicehash;
+@property (nonatomic) uint64_t height;
 
 @property (nonatomic, readonly) uint64_t versionMajor;
 @property (nonatomic, readonly) uint64_t versionMinor;

@@ -71,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		D07D9D33200DFD5700AB5832 /* MetalGranularity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalGranularity.h; sourceTree = "<group>"; };
+		D07DD26222BE5BC700CAD395 /* variant4_random_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = variant4_random_math.h; sourceTree = "<group>"; };
 		D09C74BA20ABC5E000477AAC /* stage3_1.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = stage3_1.metal; sourceTree = "<group>"; };
 		D0A27E97219783800044481E /* u64.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = u64.metal; sourceTree = "<group>"; };
 		D0A27E98219785B60044481E /* mul128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = mul128.metal; sourceTree = "<group>"; };
@@ -219,6 +220,7 @@
 			children = (
 				D0E022362005B5520054390A /* int-util.h */,
 				D0E022302005B5520054390A /* hash-ops.h */,
+				D07DD26222BE5BC700CAD395 /* variant4_random_math.h */,
 				D0E022372005B5520054390A /* slow-hash.c */,
 				D0E022462005B5E70054390A /* extra */,
 			);

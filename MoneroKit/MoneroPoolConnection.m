@@ -135,12 +135,17 @@ inline static uint64_t t32_to_t64(uint32_t t) { return 0xFFFFFFFFFFFFFFFFULL / (
       ![blobS isKindOfClass:[NSString class]] ||
       ![targetS isKindOfClass:[NSString class]]) return;
 
+  uint64_t height = 0;
+  if ([[dict objectForKey:@"height"] isKindOfClass:[NSNumber class]])
+    height = [(NSNumber*)[dict objectForKey:@"height"] unsignedLongLongValue];
+
   NSData *blob = _mm_dataFromHexString(blobS);
   NSData *target = _mm_dataFromHexString(targetS);
 
   MoneroBackendJob *job = [MoneroBackendJob new];
   [job setJobId:jid];
   [job setBlob:blob];
+  [job setHeight:height];
   if ([target length] <= 4) {
     uint32_t tmp = 0;
     [target getBytes:&tmp length:sizeof(tmp)];
