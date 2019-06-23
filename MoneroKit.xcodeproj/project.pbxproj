@@ -444,7 +444,6 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				Base,
 			);
 			mainGroup = D0E022042005B3320054390A;
 			productRefGroup = D0E0220E2005B35C0054390A /* Products */;
